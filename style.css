@@ -1,0 +1,173 @@
+/* ========================================
+   Petualangan Si Apel - Style Sheet
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap');
+
+:root {
+    --primary:   #FF6B6B;
+    --secondary: #4ECDC4;
+    --accent:    #FFD93D;
+    --text:      #2D3436;
+    --white:     #FFFFFF;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Baloo 2', cursive; }
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(160deg, #c9f0ff 0%, #fff5e6 50%, #d4f8e8 100%);
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow-x: hidden;
+}
+
+/* ============================================================
+   FLOATING EMOJIS — kiri & kanan layar
+   ============================================================ */
+.float-emoji {
+    position: fixed;
+    font-size: 2rem;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.30;
+    animation: emoji-float 6s ease-in-out infinite;
+    z-index: 0;
+}
+
+/* Animasi naik-turun + sedikit goyang */
+@keyframes emoji-float {
+    0%   { transform: translateY(0px)   rotate(0deg);  }
+    33%  { transform: translateY(-14px) rotate(4deg);  }
+    66%  { transform: translateY(-6px)  rotate(-3deg); }
+    100% { transform: translateY(0px)   rotate(0deg);  }
+}
+
+/* Posisi masing-masing emoji kiri */
+.fe-l1  { left:2%;  top:10%; animation-delay:0s;   animation-duration:5.0s; font-size:2.2rem; }
+.fe-l2  { left:4%;  top:25%; animation-delay:1.2s; animation-duration:6.5s; font-size:1.7rem; }
+.fe-l3  { left:1%;  top:42%; animation-delay:2.5s; animation-duration:5.8s; font-size:2.5rem; }
+.fe-l4  { left:5%;  top:58%; animation-delay:0.7s; animation-duration:7.0s; font-size:1.5rem; }
+.fe-l5  { left:2%;  top:72%; animation-delay:3.0s; animation-duration:5.5s; font-size:2.0rem; }
+.fe-l6  { left:6%;  top:86%; animation-delay:1.8s; animation-duration:6.2s; font-size:1.8rem; }
+
+/* Posisi masing-masing emoji kanan */
+.fe-r1  { right:2%;  top:8%;  animation-delay:0.5s; animation-duration:5.5s; font-size:2.3rem; }
+.fe-r2  { right:4%;  top:22%; animation-delay:2.0s; animation-duration:6.0s; font-size:1.6rem; }
+.fe-r3  { right:1%;  top:38%; animation-delay:1.0s; animation-duration:7.0s; font-size:2.4rem; }
+.fe-r4  { right:5%;  top:55%; animation-delay:3.5s; animation-duration:5.2s; font-size:1.5rem; }
+.fe-r5  { right:2%;  top:68%; animation-delay:0.3s; animation-duration:6.8s; font-size:2.1rem; }
+.fe-r6  { right:6%;  top:83%; animation-delay:2.8s; animation-duration:5.7s; font-size:1.9rem; }
+
+/* Hide on narrow screens */
+@media (max-width: 900px) { .float-emoji { display: none; } }
+
+/* ============================================================
+   APP CONTAINER
+   ============================================================ */
+.app-container {
+    background: var(--white);
+    width: 100%;
+    max-width: 700px;
+    padding: 40px;
+    border-radius: 25px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.10);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 650px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* --- Music Toggle --- */
+#music-toggle {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: var(--white);
+    border: 2px solid var(--secondary);
+    border-radius: 50%;
+    width: 44px; height: 44px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(78,205,196,0.2);
+}
+#music-toggle:hover { background: var(--secondary); transform: scale(1.1); }
+#music-toggle.muted { border-color: #ccc; opacity: 0.7; }
+
+/* --- Screen Panels --- */
+.screen { display:none; flex-direction:column; align-items:center; animation:fadeIn 0.5s ease; width:100%; }
+.screen.active { display:flex; }
+
+@keyframes fadeIn {
+    from { opacity:0; transform:translateY(10px); }
+    to   { opacity:1; transform:translateY(0); }
+}
+
+/* --- Typography --- */
+h1 { color:var(--primary); font-size:2.5rem; margin-bottom:10px; }
+h2 { color:var(--secondary); font-size:2rem; margin-bottom:10px; }
+p  { font-size:1.2rem; line-height:1.6; margin-bottom:15px; }
+.narration { font-style:italic; color:#888; font-size:1rem; margin-bottom:20px; }
+
+/* --- Buttons --- */
+.btn { background:var(--primary); color:var(--white); border:none; padding:15px 30px; font-size:1.2rem; font-weight:600; border-radius:50px; cursor:pointer; margin:5px; transition:all 0.3s ease; font-family:'Baloo 2', cursive; box-shadow:0 4px 0 #e55c5c; }
+.btn:hover  { transform:translateY(-2px); box-shadow:0 6px 0 #e55c5c; }
+.btn:active { transform:translateY(2px);  box-shadow:0 2px 0 #e55c5c; }
+.btn-secondary { background:var(--secondary); box-shadow:0 4px 0 #3bb5ad; }
+.btn-secondary:hover { box-shadow:0 6px 0 #3bb5ad; }
+.btn-ghost { background:transparent; color:var(--text); border:3px solid var(--text); box-shadow:none; }
+.btn-ghost:hover { background:var(--text); color:var(--white); }
+.btn-exit { border-color:#FF6B6B; color:#FF6B6B; }
+.btn-exit:hover { background:#FF6B6B; color:var(--white); }
+
+/* --- Splash --- */
+#apple-logo { font-size:5rem; animation:bounce 1s infinite alternate; }
+@keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-20px)} }
+.loading-text { font-size:1rem; color:#999; margin-top:30px; }
+
+/* --- Menu --- */
+.menu-buttons { display:flex; flex-direction:column; gap:15px; margin-top:20px; width:100%; max-width:300px; }
+.menu-icon { font-size:4rem; margin-bottom:10px; }
+
+/* --- Video Container --- */
+.video-container { width:100%; background:#000; border-radius:20px; margin:10px 0 20px; overflow:hidden; border:5px solid var(--secondary); }
+#organ-video { width:100%; height:300px; object-fit:cover; display:block; }
+
+/* --- Organ Description --- */
+.organ-description-box { background:#FFFFFF; padding:20px; border-radius:15px; border:2px dashed var(--accent); margin-bottom:20px; }
+.nav-buttons { display:flex; justify-content:space-between; width:100%; margin-top:10px; }
+
+/* --- Materi --- */
+.materi-box { text-align:left; background:#FFF9E6; padding:20px; border-radius:15px; width:100%; }
+.materi-box p { font-size:1.1rem; }
+
+/* --- Quiz --- */
+#progress-bar-container { width:100%; background:#eee; height:15px; border-radius:10px; margin-bottom:20px; overflow:hidden; }
+#progress-bar { background:var(--secondary); height:100%; width:0%; transition:width 0.5s ease; border-radius:10px; }
+.options-container { display:flex; flex-direction:column; gap:15px; width:100%; }
+.option-btn { background:var(--white); border:3px solid var(--secondary); color:var(--text); padding:15px; font-size:1.2rem; font-weight:600; border-radius:15px; cursor:pointer; transition:all 0.3s ease; font-family:'Baloo 2', cursive; }
+.option-btn:hover:not(:disabled) { background:var(--secondary); color:var(--white); }
+.option-btn.correct  { background:#A8E6CF; border-color:#28a745; color:#155724; }
+.option-btn.wrong    { background:#FFD3D3; border-color:#dc3545; color:#721c24; }
+.option-btn:disabled { cursor:not-allowed; }
+#quiz-content { width:100%; display:flex; flex-direction:column; align-items:center; }
+.question-text { font-size:1.4rem; font-weight:600; text-align:center; }
+#result-container { display:none; flex-direction:column; align-items:center; width:100%; }
+.result-icon { font-size:4rem; margin-bottom:10px; }
+.result-stats { display:flex; justify-content:space-around; width:100%; margin:20px 0; font-size:1.2rem; font-weight:bold; }
+.stat-box { background:#FFF9E6; padding:15px 25px; border-radius:15px; min-width:100px; }
+.stat-correct { color:#28a745; }
+.stat-wrong   { color:#dc3545; }
+.stat-count   { font-size:2rem; }
+.score-highlight { color:var(--primary); font-size:3rem; font-weight:800; display:block; margin:10px 0; }
+.result-buttons { margin-top:20px; }
+.exit-message { text-align:center; font-size:2rem; color:#FF6B6B; margin-top:20vh; }

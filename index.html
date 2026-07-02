@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Si Apel: Penjelajah Tubuh Manusia</title>
+    <meta name="description" content="Aplikasi edukasi interaktif sistem pencernaan manusia melalui petualangan Si Apel.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BGM -->
+<audio id="bg-music" loop>
+    <source src="BGM Petualangan Si Apel.mp3" type="audio/mpeg">
+</audio>
+
+<!-- =====================================================
+     FLOATING EMOJIS KIRI — Makanan
+     ===================================================== -->
+<span class="float-emoji fe-l1">🍎</span>
+<span class="float-emoji fe-l2">🥦</span>
+<span class="float-emoji fe-l3">🍌</span>
+<span class="float-emoji fe-l4">🥕</span>
+<span class="float-emoji fe-l5">🍇</span>
+<span class="float-emoji fe-l6">🍞</span>
+
+<!-- =====================================================
+     FLOATING EMOJIS KANAN — Ekspresi & Fun
+     ===================================================== -->
+<span class="float-emoji fe-r1">😊</span>
+<span class="float-emoji fe-r2">⭐</span>
+<span class="float-emoji fe-r3">🎉</span>
+<span class="float-emoji fe-r4">💡</span>
+<span class="float-emoji fe-r5">🌈</span>
+<span class="float-emoji fe-r6">✨</span>
+
+<!-- =====================================================
+     APP CONTAINER
+     ===================================================== -->
+<div class="app-container">
+    <button id="music-toggle" onclick="toggleMusic()" title="Mute / Unmute">🔊</button>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen" class="screen active">
+        <div id="apple-logo">🍎</div>
+        <h1>Petualangan Si Apel</h1>
+        <p>Penjelajah Tubuh Manusia</p>
+        <p class="narration">"Selamat datang di Petualangan Si Apel!"</p>
+        <p class="loading-text">Memuat petualangan...</p>
+    </div>
+
+    <!-- MENU UTAMA -->
+    <div id="main-menu" class="screen">
+        <div class="menu-icon">👋</div>
+        <h1>Menu Utama</h1>
+        <p class="narration">"Pilih menu untuk memulai perjalananmu!"</p>
+        <div class="menu-buttons">
+            <button class="btn"                onclick="startAdventure()">🍎 Mulai Petualangan</button>
+            <button class="btn btn-secondary"  onclick="navigateTo('materi-page')">📖 Materi</button>
+            <button class="btn btn-ghost"      onclick="navigateTo('kuis-page'); startQuiz()">📝 Kuis</button>
+            <button class="btn btn-ghost btn-exit" onclick="exitApp()">Keluar</button>
+        </div>
+    </div>
+
+    <!-- HALAMAN PETUALANGAN -->
+    <div id="adventure-page" class="screen">
+        <h2 id="organ-title">Organ Pencernaan</h2>
+        <p class="narration">"Mari kita jelajahi organ pencernaan satu per satu!"</p>
+        <div class="video-container">
+            <video id="organ-video" playsinline muted loop></video>
+        </div>
+        <div class="organ-description-box">
+            <p id="organ-text">Penjelasan organ akan muncul di sini.</p>
+        </div>
+        <div class="nav-buttons">
+            <button class="btn btn-ghost" onclick="prevOrgan()">⬅ Kembali</button>
+            <button class="btn" id="organ-next-btn" onclick="nextOrgan()">Lanjut ➡</button>
+        </div>
+    </div>
+
+    <!-- MATERI -->
+    <div id="materi-page" class="screen">
+        <h2>📖 Materi Pencernaan</h2>
+        <p class="narration">"Pelajari lebih lanjut tentang sistem pencernaan manusia."</p>
+        <div class="materi-box">
+            <p><strong>🍎 Sistem Pencernaan Manusia</strong></p>
+            <p>Sistem pencernaan adalah tempat memproses makanan agar nutrisinya bisa diserap tubuh.
+            Proses ini dimulai dari <strong>Mulut</strong> (mengunyah), lalu ke
+            <strong>Kerongkongan</strong> (mendorong makanan), menuju
+            <strong>Lambung</strong> (mengaduk dengan asam), kemudian ke
+            <strong>Usus Halus</strong> (menyerap gizi), dan berakhir di
+            <strong>Usus Besar</strong> (menyerap air dan membuang sisa).</p>
+        </div>
+        <button class="btn btn-ghost" onclick="navigateTo('main-menu')" style="margin-top:20px;">⬅ Kembali</button>
+    </div>
+
+    <!-- KUIS -->
+    <div id="kuis-page" class="screen">
+        <div id="quiz-content">
+            <div id="progress-bar-container"><div id="progress-bar"></div></div>
+            <h2>Kuis 📝</h2>
+            <p class="narration">"Jawab pertanyaan berikut sesuai pemahamanmu!"</p>
+            <p id="question-text" class="question-text">Pertanyaan...</p>
+            <div id="options-container" class="options-container"></div>
+            <div class="nav-buttons" style="margin-top:20px;">
+                <button class="btn btn-ghost" id="quiz-back-btn" onclick="prevQuestion()">⬅ Kembali</button>
+                <button class="btn" id="next-btn" style="display:none;">Lanjut ➡</button>
+            </div>
+        </div>
+        <div id="result-container">
+            <div class="result-icon">🎉</div>
+            <h2>Hasil Kuis</h2>
+            <p class="narration">"Selamat! Berikut hasil pembelajaranmu."</p>
+            <div class="result-stats">
+                <div class="stat-box stat-correct">Benar<br><span id="correct-count" class="stat-count">0</span></div>
+                <div class="stat-box stat-wrong">Salah<br><span id="wrong-count"   class="stat-count">0</span></div>
+            </div>
+            <p>Nilai Akhir:</p>
+            <span class="score-highlight" id="final-score">0</span>
+            <p id="score-description"></p>
+            <div class="result-buttons">
+                <button class="btn"          onclick="startQuiz()">Coba Lagi</button>
+                <button class="btn btn-ghost" onclick="navigateTo('main-menu')">Selesai</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA ORGAN
+   ============================================================ */
+var organs = [
+    { name:"Mulut",        emoji:"🦷", video:"videos/mulut.mp4",
+      text:"Makanan dipotong dan dihaluskan secara mekanik oleh gigi serta dicerna secara kimiawi oleh enzim ptialin (amilase) dalam air liur." },
+    { name:"Kerongkongan", emoji:"🌀", video:"videos/kerongkongan.mp4",
+      text:"Makanan (yang disebut bolus) didorong menuju lambung melalui gerakan peristaltik." },
+    { name:"Lambung",      emoji:"🫃", video:"videos/lambung.mp4",
+      text:"Makanan dicerna dengan bantuan asam lambung (HCl) untuk membunuh bakteri dan enzim seperti pepsin serta renin untuk memecah protein." },
+    { name:"Usus Halus",   emoji:"〰️", video:"videos/usus_halus.mp4",
+      text:"Tempat terjadinya pencernaan kimiawi lanjutan oleh enzim dari pankreas (tripsin, amilopsin, lipase) serta penyerapan sari-sari makanan, vitamin, dan mineral." },
+    { name:"Usus Besar",   emoji:"🟤", video:"videos/usus_besar.mp4",
+      text:"Sisa makanan yang tidak dicerna mengalami penyerapan air, lalu diubah menjadi feses yang kemudian dikeluarkan melalui anus." }
+];
+
+/* ============================================================
+   DATA KUIS
+   ============================================================ */
+var quizData = [
+    { question:"Di organ manakah Si Apel pertama kali dikunyah?",
+      options:["Lambung","Mulut","Usus Halus"], correct:"Mulut" },
+    { question:"Gerakan mendorong makanan di kerongkongan disebut gerakan...",
+      options:["Peristaltik","Mengunyah","Menelan"], correct:"Peristaltik" },
+    { question:"Apa yang terjadi pada makanan di dalam lambung?",
+      options:["Diserap vitaminnya","Dikeluarkan menjadi kotoran","Diaduk menjadi bubur cair"], correct:"Diaduk menjadi bubur cair" },
+    { question:"Di organ manakah zat gizi diserap oleh tubuh?",
+      options:["Usus Besar","Usus Halus","Mulut"], correct:"Usus Halus" },
+    { question:"Apa fungsi utama dari Usus Besar?",
+      options:["Menyerap air","Mengunyah makanan","Menghasilkan asam"], correct:"Menyerap air" }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+var currentOrganIndex    = 0;
+var currentQuestionIndex = 0;
+var score                = 0;
+var selectedAnswer       = false;
+var userAnswers          = [];
+var bgMusicStarted       = false;
+
+var bgMusic = document.getElementById('bg-music');
+var musicBtn = document.getElementById('music-toggle');
+
+/* ============================================================
+   MUSIK — MUTE / UNMUTE
+   ============================================================ */
+function startBGM() {
+    if (bgMusicStarted) return;
+    bgMusicStarted = true;
+    bgMusic.volume = 0.5;
+    bgMusic.muted  = false;
+    bgMusic.play().catch(function(){});
+    musicBtn.innerText = "🔊";
+    musicBtn.classList.remove('muted');
+}
+
+function toggleMusic() {
+    if (!bgMusicStarted) {
+        startBGM();
+        return;
+    }
+    if (bgMusic.muted) {
+        // UNMUTE
+        bgMusic.muted = false;
+        musicBtn.innerText = "🔊";
+        musicBtn.classList.remove('muted');
+    } else {
+        // MUTE
+        bgMusic.muted = true;
+        musicBtn.innerText = "🔇";
+        musicBtn.classList.add('muted');
+    }
+}
+
+// Mulai BGM saat user pertama kali berinteraksi (aturan autoplay browser)
+document.addEventListener('click', function firstClick() {
+    startBGM();
+    document.removeEventListener('click', firstClick);
+}, { once: true });
+
+/* ============================================================
+   NAVIGASI
+   ============================================================ */
+function navigateTo(id) {
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+}
+
+function exitApp() {
+    if (confirm("Yakin ingin keluar?")) {
+        document.body.innerHTML = '<div class="exit-message">Terima kasih sudah belajar!<br>👋</div>';
+    }
+}
+
+/* ============================================================
+   PETUALANGAN — VIDEO
+   ============================================================ */
+function startAdventure() {
+    navigateTo('adventure-page');
+    loadOrgan(0);
+}
+
+function loadOrgan(index) {
+    currentOrganIndex = index;
+    var organ = organs[index];
+
+    document.getElementById('organ-title').innerText = organ.name;
+    document.getElementById('organ-text').innerText  = organ.text;
+
+    var nextBtn = document.getElementById('organ-next-btn');
+    nextBtn.innerText = (index === organs.length - 1) ? "Selesai & Kuis 📝" : "Lanjut ➡";
+
+    // Ganti video — hapus lama, buat baru agar tidak ter-cache
+    var container = document.querySelector('.video-container');
+    var old = document.getElementById('organ-video');
+    if (old) {
+        old.pause();
+        old.removeAttribute('src');
+        old.load();
+        container.removeChild(old);
+    }
+
+    var vid = document.createElement('video');
+    vid.id   = 'organ-video';
+    vid.muted = true;
+    vid.loop  = true;
+    vid.setAttribute('playsinline', '');
+    vid.src  = organ.video + '?t=' + Date.now();
+    container.appendChild(vid);
+    vid.load();
+    vid.play().catch(function(e){ console.warn("Play blocked:", e); });
+}
+
+function nextOrgan() {
+    if (currentOrganIndex < organs.length - 1) {
+        loadOrgan(currentOrganIndex + 1);
+    } else {
+        var v = document.getElementById('organ-video');
+        if (v) v.pause();
+        navigateTo('kuis-page');
+        startQuiz();
+    }
+}
+
+function prevOrgan() {
+    if (currentOrganIndex > 0) {
+        loadOrgan(currentOrganIndex - 1);
+    } else {
+        var v = document.getElementById('organ-video');
+        if (v) v.pause();
+        navigateTo('main-menu');
+    }
+}
+
+/* ============================================================
+   KUIS
+   ============================================================ */
+function startQuiz() {
+    currentQuestionIndex = 0; score = 0; userAnswers = [];
+    document.getElementById('quiz-content').style.display     = 'block';
+    document.getElementById('result-container').style.display = 'none';
+    showQuestion();
+}
+
+function showQuestion() {
+    var q = quizData[currentQuestionIndex];
+    document.getElementById('question-text').innerText =
+        (currentQuestionIndex + 1) + ". " + q.question;
+    document.getElementById('progress-bar').style.width =
+        ((currentQuestionIndex + 1) / quizData.length * 100) + '%';
+
+    var con = document.getElementById('options-container');
+    con.innerHTML = '';
+    selectedAnswer = userAnswers[currentQuestionIndex] || false;
+
+    q.options.forEach(function(opt) {
+        var btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        if (selectedAnswer) {
+            if (opt === q.correct)           btn.classList.add('correct');
+            else if (opt === selectedAnswer) btn.classList.add('wrong');
+            btn.disabled = true;
+        }
+        btn.addEventListener('click', function(){ selectAnswer(opt); });
+        con.appendChild(btn);
+    });
+
+    var nxt = document.getElementById('next-btn');
+    nxt.style.display = selectedAnswer ? 'inline-block' : 'none';
+    nxt.onclick = nextQuestion;
+    document.getElementById('quiz-back-btn').style.display =
+        currentQuestionIndex === 0 ? 'none' : 'inline-block';
+}
+
+function selectAnswer(answer) {
+    if (selectedAnswer) return;
+    selectedAnswer = answer;
+    userAnswers[currentQuestionIndex] = answer;
+    var q = quizData[currentQuestionIndex];
+    if (answer === q.correct) score++;
+    document.querySelectorAll('.option-btn').forEach(function(btn) {
+        btn.disabled = true;
+        if (btn.innerText === q.correct)    btn.classList.add('correct');
+        else if (btn.innerText === answer)  btn.classList.add('wrong');
+    });
+    document.getElementById('next-btn').style.display = 'inline-block';
+}
+
+function nextQuestion() {
+    if (currentQuestionIndex < quizData.length - 1) { currentQuestionIndex++; showQuestion(); }
+    else showResult();
+}
+
+function prevQuestion() {
+    if (currentQuestionIndex > 0) { currentQuestionIndex--; showQuestion(); }
+}
+
+function showResult() {
+    document.getElementById('quiz-content').style.display     = 'none';
+    document.getElementById('result-container').style.display = 'block';
+    var wrong = quizData.length - score;
+    var pct   = Math.round((score / quizData.length) * 100);
+    document.getElementById('correct-count').innerText  = score;
+    document.getElementById('wrong-count').innerText    = wrong;
+    document.getElementById('final-score').innerText    = pct;
+    document.getElementById('score-description').innerText =
+        pct === 100 ? "Luar biasa! 🌟" : pct >= 60 ? "Bagus sekali! 👍" : "Jangan menyerah! 📚";
+}
+
+/* ============================================================
+   INIT — Splash → Menu
+   ============================================================ */
+setTimeout(function(){ navigateTo('main-menu'); }, 3000);
+</script>
+</body>
+</html>
